@@ -23,7 +23,8 @@ public class InputManager : MonoBehaviour
 
     public Vector2 GetPlayerInput(int player)
     {
-        
+        // set up input axis in Preferences/Input 
+        return new Vector2(Input.GetAxis("Player " + player + " X"), Input.GetAxis("Player " + player + " Y"));
         return Vector2.zero;
     }
 }
