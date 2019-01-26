@@ -33,11 +33,19 @@ public class PlayerControlAnims : MonoBehaviour
         }
     }
 
-    [Space]
+    [Header("Input")]
     public float minInput = 0.1f;
-    public float animSmoothing = 0.2f;
-    float lastMoveMagnitude = 0f;
+    public float animSmoothing = 0.1f;
+    Vector3 lastAnimDir;
 
+    [Header("Velocities")]
+    public float animSpeedBoostTowardsPlayers = 0.5f;
+    public Vector2 distRangeToPlayerCenterToSpeedBoost = new Vector2(1, 2);
+    public Vector2 angleRangeToPlayerCenterToSpeedBoost = new Vector2(30f, 90f);
+
+    public Vector3 curDir;
+
+    #region stolen from skijump AI ;)
     [Header("Rotation")]
     [Tooltip("Body turning smoothness override for target movement")]
     [SerializeField]
@@ -62,6 +70,7 @@ public class PlayerControlAnims : MonoBehaviour
         bodyTurningSmoothness = Mathf.Max(bodyTurningSmoothness, forceMaxRotationSmoothing);
         transform.forward = Vector3.Lerp(transform.forward, e, bodyTurningSmoothness);
     }
+    #endregion
 
     private void OnValidate()
     {
@@ -81,21 +90,43 @@ public class PlayerControlAnims : MonoBehaviour
             xzDirection = Vector3.zero;
         }
 
+        lastAnimDir = Vector3.MoveTowards(lastAnimDir, xzDirection, animSmoothing);
+
         // rotate
-        if (xzDirection != Vector3.zero)
+        if (lastAnimDir != Vector3.zero)
         {
-            Update_RotateTowards(xzDirection);
+            Update_RotateTowards(lastAnimDir);
         }
 
         // move (set even if zero... because anims)
-        Update_MoveTowards(xzDirection);
+        Update_MoveTowards(lastAnimDir, playerIn != Vector2.zero);
+
 
     }
 
-    private void Update_MoveTowards(Vector3 xzDirection)
+
+    private void Update_MoveTowards(Vector3 dir, bool inputActive)
     {
-        lastMoveMagnitude = Mathf.Lerp(lastMoveMagnitude, xzDirection.magnitude, animSmoothing);
-        anim.SetFloat("Walk", lastMoveMagnitude);
+        var speed = dir.magnitude;
+        if (inputActive)
+        {
+            // if speed is towards player center of gravity, give it some boost.
+            var playerCenterOfGravity = PlayerCenterOfGravityManager.instance.centerOfGravity;
+            var toCenter = playerCenterOfGravity - transform.position;
+            var angleToCenter = Vector3.Angle(dir, toCenter);
+            // 0..1 parameter where 1 is MINIMUM angle, 0 is maximum angle, so we can multiply with the speed boost effect DIRECTLY without more operations
+            var angleParam = Mathf.InverseLerp(angleRangeToPlayerCenterToSpeedBoost.y, angleRangeToPlayerCenterToSpeedBoost.x, angleToCenter);
+
+            // 0..1 param where 1 is max distance, 0 is min distance, so we can multiply with speed boost => speed boost is max when we are FAR.
+            var distParam = Mathf.InverseLerp(distRangeToPlayerCenterToSpeedBoost.x, distRangeToPlayerCenterToSpeedBoost.y, toCenter.magnitude);
+
+            speed += angleParam * animSpeedBoostTowardsPlayers * distParam;
+        }
+
+        curDir = dir.normalized * speed;
+
+        anim.SetFloat("Walk", speed);
+
     }
 
     private void Update_RotateTowards(Vector3 dir)
@@ -114,5 +145,12 @@ public class PlayerControlAnims : MonoBehaviour
         {
             rb.isKinematic = kinematic;
         }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(transform.position + Vector3.up * 0.2f, transform.position + Vector3.up * 0.2f + curDir);
+
     }
 }

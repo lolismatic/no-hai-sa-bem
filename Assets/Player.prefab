@@ -99,6 +99,36 @@ MonoBehaviour:
   _player: {fileID: 0}
   _anim: {fileID: 4775515159425760644}
   minInput: 0.1
+  animSmoothing: 0.2
+  animSpeedBoostTowardsPlayers: 0.5
+  distRangeToPlayerCenterToSpeedBoost: {x: 1, y: 2}
+  angleRangeToPlayerCenterToSpeedBoost: {x: 30, y: 90}
+  curDir: {x: 0, y: 0, z: 0}
+  _distToTargetToBodyTurningSmoothness:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 3
+      value: 0.036
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _bodyTurningSmoothnessDefault: 0.05
 --- !u!114 &5741383490630858259
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -161,7 +191,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1349901661621053630}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1

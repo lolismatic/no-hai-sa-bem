@@ -99,6 +99,7 @@ ModelImporter:
     400088: rThumb2
     7400000: 137_13
     7400002: Hand fwd drunk walk
+    7400004: Hand fwd Stopping
     9500000: //RootNode
   externalObjects: {}
   materials:
@@ -160,14 +161,42 @@ ModelImporter:
       name: Hand fwd drunk walk
       takeName: 137_13
       firstFrame: 58
-      lastFrame: 201
+      lastFrame: 163
       wrapMode: 0
-      orientationOffsetY: 9
+      orientationOffsetY: 7.8
       level: 0
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
       loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 1
+      loopBlendPositionY: 1
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 23.49
+    - serializedVersion: 16
+      name: Hand fwd Stopping
+      takeName: 137_13
+      firstFrame: 163
+      lastFrame: 234
+      wrapMode: 0
+      orientationOffsetY: 18.01
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 1
       loopBlendPositionY: 1
