@@ -34,8 +34,34 @@ public class kEEPpLAYERSaPART : MonoBehaviour
         }
     }
 
+    [SerializeField]
+    private GroupToBarThing _groupToBar;
+    public GroupToBarThing groupToBar
+    {
+        get
+        {
+            if (_groupToBar == null)
+            {
+                _groupToBar = GetComponent<GroupToBarThing>();
+            }
+            return _groupToBar;
+        }
+    }
+
+
     public float swarmingForce = 0.1f;
     public float minDist = 0.3f;
+
+    public float distForKeepTogether = 0.6f;
+
+    public bool keepTogether
+        ;
+    //{
+    //    get
+    //    {
+    //        return groupToBar.state == GroupToBarThing.GroupStates.TowardsBar;
+    //    }
+    //}
 
     private void Update()
     {
@@ -46,24 +72,47 @@ public class kEEPpLAYERSaPART : MonoBehaviour
         {
             var towardsLEft = group.leftGrabbed.transform.position - transform.position;
             towardsLEft.y = 0;
-            if (towardsLEft.sqrMagnitude < minDist * minDist)
+            if (keepTogether)
             {
-                away += towardsLEft;
-                average += 1;
+                if (towardsLEft.sqrMagnitude > distForKeepTogether * distForKeepTogether)
+                {
+                    away += towardsLEft;
+                    average += 1;
+                }
+            }
+            else
+            {
+                if (towardsLEft.sqrMagnitude < minDist * minDist)
+                {
+                    away += towardsLEft;
+                    average += 1;
+                }
             }
         }
         if (group.rightGrabbed != null)
         {
             var toRight = group.rightGrabbed.transform.position - transform.position;
             toRight.y = 0;
-            if (toRight.sqrMagnitude < minDist * minDist)
+            if (keepTogether)
             {
-                away += toRight;
-                average += 1;
+                if (toRight.sqrMagnitude > distForKeepTogether * distForKeepTogether)
+                {
+                    away += toRight;
+                    average += 1;
+                }
+            }
+            else
+            {
+                if (toRight.sqrMagnitude < minDist * minDist)
+                {
+                    away += toRight;
+                    average += 1;
+                }
             }
         }
 
-        transform.position += away / Mathf.Max(1, average) * swarmingForce * Time.deltaTime;
+        transform.position += (keepTogether ? -1 : 1f)
+            * away / Mathf.Max(1, average) * swarmingForce * Time.deltaTime;
 
     }
 }

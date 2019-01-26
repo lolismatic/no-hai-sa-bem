@@ -69,6 +69,29 @@ public class PlayerGroupStatus : MonoBehaviour
     private List<PlayerGroupStatus> nearestGrabbableLeft = new List<PlayerGroupStatus>();
     private List<PlayerGroupStatus> nearestGrabbableRight = new List<PlayerGroupStatus>();
 
+    public event System.Action OnGroup;
+    public event System.Action OnUngroup;
+
+    private HashSet<Component> ungroupInhibitors = new HashSet<Component>();
+    // can ungroup when the inhibitors are zero.
+    public bool canUngroup
+    {
+        get
+        {
+            return ungroupInhibitors.Count == 0;
+        }
+    }
+
+    public void DisallowUngrouping(Component sender)
+    {
+        ungroupInhibitors.Add(sender);
+    }
+
+    public void AllowUngrouping(Component sender)
+    {
+        ungroupInhibitors.Remove(sender);
+    }
+
     [Space]
     public float groupRotateSmooth = 0.1f;
 
@@ -119,7 +142,11 @@ public class PlayerGroupStatus : MonoBehaviour
                     // check if we should ungrab them...?
                     if (feetDist > maxDistToUngrab)
                     {
-                        Ungrab(otherGS);
+                        if (canUngroup)
+                        {
+                            Ungrab(otherGS);
+
+                        }
                     }
                 }
                 else if (leftGrabbed == null || rightGrabbed == null) // if either hand is free AND we are not grabbing the other player...
@@ -152,6 +179,22 @@ public class PlayerGroupStatus : MonoBehaviour
                 }
 
             }
+        }
+
+        // remove already grabbed motherfuckers !!!! sso we don't make the hora mare
+        var pointer = leftGrabbed;
+        while (pointer != null)
+        {
+            nearestGrabbableLeft.Remove(pointer);
+            nearestGrabbableRight.Remove(pointer);
+            pointer = pointer.leftGrabbed;
+        }
+        pointer = rightGrabbed;
+        while (pointer != null)
+        {
+            nearestGrabbableLeft.Remove(pointer);
+            nearestGrabbableRight.Remove(pointer);
+            pointer = pointer.rightGrabbed;
         }
 
         // grab for left, the nearest available right.
@@ -234,7 +277,8 @@ public class PlayerGroupStatus : MonoBehaviour
             return null;
 
         // if other left is needed, and it is null, that one is available. return.
-        if ((otherGS.leftGrabbed == null && otherLeft) || (otherGS.rightGrabbed == null && !otherLeft))
+        if ((otherGS.leftGrabbed == null && otherLeft)
+            || (otherGS.rightGrabbed == null && !otherLeft))
         {
             return otherGS;
         }
