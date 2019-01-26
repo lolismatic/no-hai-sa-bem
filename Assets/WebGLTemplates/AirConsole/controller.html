@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Controller</title>
+    <script type="text/javascript" src="https://www.airconsole.com/api/airconsole-1.7.0.js"></script>
+</head>
+<body>
+    <div id="output"></div>
+
+    <script type="text/javascript">
+    var airconsole = new AirConsole({ device_motion: 10 });
+    var device_id = null;
+
+    airconsole.onConnect = function(device_id) {
+        device_id = device_id;
+
+        airconsole.message(AirConsole.SCREEN, { tilt: { x: 0, y: 0, z: 0 }, device_id });
+    };
+
+    airconsole.onDeviceMotion = function(event) {
+        let { x, y } = event;
+
+        if (x == null || y == null) {
+            return;
+        }
+
+        x = Math.round(x * 10) / 100;
+        y = Math.round(y * 10) / 100;
+
+        if (x > 0.9) {
+            x = 1;
+        }
+
+        if (x < -0.9) {
+            x = -1;
+        }
+
+        if (y > 0.9) {
+            y = 1;
+        }
+
+        if (y < -0.9) {
+            y = -1;
+        }
+
+        document.getElementById(`output`).innerHTML = 
+            JSON.stringify({ tilt: { x, y },  }, null, 4);
+
+        airconsole.message(AirConsole.SCREEN, { tilt: { x: x * -1, y: y * -1, z: 0 }, device_id })
+
+        // Or by setting custom device states:
+        // airconsole.setCustomDeviceStateProperty("tilt", data);
+    }
+
+    </script>
+</body>
+</html>
