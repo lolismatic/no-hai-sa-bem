@@ -44,6 +44,7 @@ public class PlayerControlAnims : MonoBehaviour
     public Vector2 angleRangeToPlayerCenterToSpeedBoost = new Vector2(30f, 90f);
 
     public Vector3 curDir;
+    public float curSpeed;
 
     #region stolen from skijump AI ;)
     [Header("Rotation")]
@@ -123,6 +124,7 @@ public class PlayerControlAnims : MonoBehaviour
             speed += angleParam * animSpeedBoostTowardsPlayers * distParam;
         }
 
+        curSpeed = speed;
         curDir = dir.normalized * speed;
 
         anim.SetFloat("Walk", speed);
@@ -149,7 +151,11 @@ public class PlayerControlAnims : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.red;
+        Gizmos.color = Color.Lerp(Color.green, Color.yellow, Mathf.Clamp01(curSpeed));
+        if (curSpeed >= 1)
+        {
+            Gizmos.color = Color.Lerp(Color.yellow, Color.red, (curSpeed - 1) / animSpeedBoostTowardsPlayers);
+        }
         Gizmos.DrawLine(transform.position + Vector3.up * 0.2f, transform.position + Vector3.up * 0.2f + curDir);
 
     }
