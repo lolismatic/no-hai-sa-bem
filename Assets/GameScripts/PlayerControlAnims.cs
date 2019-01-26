@@ -137,7 +137,7 @@ public class PlayerControlAnims : MonoBehaviour
         //transform.LookAt(transform.position + dir);
 
         RotationUpdate(dir);
-
+        
     }
 
     [DebugButton]
