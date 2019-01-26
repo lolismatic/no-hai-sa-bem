@@ -42,9 +42,8 @@ public class AnimatorTransfer : MonoBehaviour
 
     private void Update_Transfer()
     {
-        // because child is parented, it will also be moved.
-        transform.position = anim.rootPosition;
-        // move child back to localpos zero.
-        anim.rootPosition = transform.position;
+        var delta = anim.transform.position - transform.position;
+        anim.transform.localPosition = Vector3.zero;
+        transform.position += delta;
     }
 }

@@ -2,8 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerControlH : MonoBehaviour
+public class PlayerControlRigidbody : MonoBehaviour
 {
+    [SerializeField]
+    private Player _player;
+    public Player player
+    {
+        get
+        {
+            if (_player == null)
+            {
+                _player = GetComponent<Player>();
+            }
+            return _player;
+        }
+    }
+
     [SerializeField]
     private Rigidbody _rb;
     public Rigidbody rb
@@ -18,7 +32,7 @@ public class PlayerControlH : MonoBehaviour
         }
     }
 
-    public int playerNumber = 0;
+    public int playerNumber { get { return player.playerId; } }
 
     public float forceMulti = 10f;
     public float fwdOffset = 1f;
@@ -33,7 +47,7 @@ public class PlayerControlH : MonoBehaviour
         var force = new Vector3(playerIn.x, 0, playerIn.y);
         force *= forceMulti;
 
-        rb.AddForceAtPosition(force, transform.InverseTransformPoint( Vector3.forward * fwdOffset));
+        rb.AddForceAtPosition(force, transform.InverseTransformPoint(Vector3.forward * fwdOffset));
 
         rb.AddForceAtPosition(Vector3.up * balanceForce, transform.InverseTransformPoint(Vector3.up * balanceForceOffset));
         rb.AddForceAtPosition(Vector3.down * balanceForce, transform.InverseTransformPoint(Vector3.down * balanceForceOffset));
