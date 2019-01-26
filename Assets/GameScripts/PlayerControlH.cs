@@ -21,6 +21,7 @@ public class PlayerControlH : MonoBehaviour
     public int playerNumber = 0;
 
     public float forceMulti = 10f;
+    public float fwdOffset = 1f;
 
     public float balanceForce = 10f;
     public float balanceForceOffset = 1f;
@@ -32,7 +33,7 @@ public class PlayerControlH : MonoBehaviour
         var force = new Vector3(playerIn.x, 0, playerIn.y);
         force *= forceMulti;
 
-        rb.AddForce(force);
+        rb.AddForceAtPosition(force, transform.InverseTransformPoint( Vector3.forward * fwdOffset));
 
         rb.AddForceAtPosition(Vector3.up * balanceForce, transform.InverseTransformPoint(Vector3.up * balanceForceOffset));
         rb.AddForceAtPosition(Vector3.down * balanceForce, transform.InverseTransformPoint(Vector3.down * balanceForceOffset));

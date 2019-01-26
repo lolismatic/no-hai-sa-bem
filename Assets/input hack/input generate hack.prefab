@@ -1,14 +1,50 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!13 &1
-InputManager:
+--- !u!1 &1765034426653829261
+GameObject:
   m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Axes:
-  - serializedVersion: 3
-    m_Name: Player 0 Y
-    descriptiveName: 
-    descriptiveNegativeName: 
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1546193441509822908}
+  - component: {fileID: 6837418263425857022}
+  m_Layer: 0
+  m_Name: input generate hack
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1546193441509822908
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1765034426653829261}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.00000029802322, y: 1.530694, z: -0.010681912}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6837418263425857022
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1765034426653829261}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e651ac7f38787944b2fc9162393276b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputItems:
+  - axisName: Player 0 Y
     negativeButton: s
     positiveButton: w
     altNegativeButton: 
@@ -21,10 +57,7 @@ InputManager:
     type: 0
     axis: 0
     joyNum: 0
-  - serializedVersion: 3
-    m_Name: Player 0 X
-    descriptiveName: 
-    descriptiveNegativeName: 
+  - axisName: Player 0 X
     negativeButton: a
     positiveButton: d
     altNegativeButton: 
@@ -37,10 +70,7 @@ InputManager:
     type: 0
     axis: 0
     joyNum: 0
-  - serializedVersion: 3
-    m_Name: Player 1 Y
-    descriptiveName: 
-    descriptiveNegativeName: 
+  - axisName: Player 1 Y
     negativeButton: g
     positiveButton: t
     altNegativeButton: 
@@ -53,10 +83,7 @@ InputManager:
     type: 0
     axis: 0
     joyNum: 0
-  - serializedVersion: 3
-    m_Name: Player 1 X
-    descriptiveName: 
-    descriptiveNegativeName: 
+  - axisName: Player 1 X
     negativeButton: f
     positiveButton: h
     altNegativeButton: 
@@ -69,10 +96,7 @@ InputManager:
     type: 0
     axis: 0
     joyNum: 0
-  - serializedVersion: 3
-    m_Name: Player 2 Y
-    descriptiveName: 
-    descriptiveNegativeName: 
+  - axisName: Player 2 Y
     negativeButton: k
     positiveButton: i
     altNegativeButton: 
@@ -85,10 +109,7 @@ InputManager:
     type: 0
     axis: 0
     joyNum: 0
-  - serializedVersion: 3
-    m_Name: Player 2 X
-    descriptiveName: 
-    descriptiveNegativeName: 
+  - axisName: Player 2 X
     negativeButton: j
     positiveButton: l
     altNegativeButton: 
@@ -101,10 +122,7 @@ InputManager:
     type: 0
     axis: 0
     joyNum: 0
-  - serializedVersion: 3
-    m_Name: Player 3 Y
-    descriptiveName: 
-    descriptiveNegativeName: 
+  - axisName: Player 3 Y
     negativeButton: down
     positiveButton: up
     altNegativeButton: 
@@ -117,10 +135,7 @@ InputManager:
     type: 0
     axis: 0
     joyNum: 0
-  - serializedVersion: 3
-    m_Name: Player 3 X
-    descriptiveName: 
-    descriptiveNegativeName: 
+  - axisName: Player 3 X
     negativeButton: left
     positiveButton: right
     altNegativeButton: 
@@ -133,10 +148,7 @@ InputManager:
     type: 0
     axis: 0
     joyNum: 0
-  - serializedVersion: 3
-    m_Name: Player 0 X
-    descriptiveName: 
-    descriptiveNegativeName: 
+  - axisName: Player 0 X
     negativeButton: 
     positiveButton: 
     altNegativeButton: 
@@ -149,10 +161,7 @@ InputManager:
     type: 2
     axis: 0
     joyNum: 1
-  - serializedVersion: 3
-    m_Name: Player 0 Y
-    descriptiveName: 
-    descriptiveNegativeName: 
+  - axisName: Player 0 Y
     negativeButton: 
     positiveButton: 
     altNegativeButton: 
@@ -165,10 +174,7 @@ InputManager:
     type: 2
     axis: 1
     joyNum: 1
-  - serializedVersion: 3
-    m_Name: Player 1 X
-    descriptiveName: 
-    descriptiveNegativeName: 
+  - axisName: Player 1 X
     negativeButton: 
     positiveButton: 
     altNegativeButton: 
@@ -181,10 +187,7 @@ InputManager:
     type: 2
     axis: 3
     joyNum: 1
-  - serializedVersion: 3
-    m_Name: Player 1 Y
-    descriptiveName: 
-    descriptiveNegativeName: 
+  - axisName: Player 1 Y
     negativeButton: 
     positiveButton: 
     altNegativeButton: 
@@ -197,10 +200,7 @@ InputManager:
     type: 2
     axis: 4
     joyNum: 1
-  - serializedVersion: 3
-    m_Name: Player 2 X
-    descriptiveName: 
-    descriptiveNegativeName: 
+  - axisName: Player 2 X
     negativeButton: 
     positiveButton: 
     altNegativeButton: 
@@ -213,10 +213,7 @@ InputManager:
     type: 2
     axis: 0
     joyNum: 2
-  - serializedVersion: 3
-    m_Name: Player 2 Y
-    descriptiveName: 
-    descriptiveNegativeName: 
+  - axisName: Player 2 Y
     negativeButton: 
     positiveButton: 
     altNegativeButton: 
@@ -229,10 +226,7 @@ InputManager:
     type: 2
     axis: 1
     joyNum: 2
-  - serializedVersion: 3
-    m_Name: Player 3 X
-    descriptiveName: 
-    descriptiveNegativeName: 
+  - axisName: Player 3 X
     negativeButton: 
     positiveButton: 
     altNegativeButton: 
@@ -245,10 +239,7 @@ InputManager:
     type: 2
     axis: 3
     joyNum: 2
-  - serializedVersion: 3
-    m_Name: Player 3 Y
-    descriptiveName: 
-    descriptiveNegativeName: 
+  - axisName: Player 3 Y
     negativeButton: 
     positiveButton: 
     altNegativeButton: 
@@ -261,3 +252,9 @@ InputManager:
     type: 2
     axis: 4
     joyNum: 2
+  gravityForKeys: 3
+  deadForKeys: 0.001
+  sensiForKeys: 3
+  gravityForJoy: 0
+  deadForJoy: 0.19
+  sensiForJoy: 1
