@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NDream.AirConsole;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,22 +28,22 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    public int CreateNewPlayer(int playerId)
+    public int CreateNewPlayer(int deviceId)
     {
-        if (playerMap.ContainsKey(playerId)) {
-            return playerMap[playerId];
+        if (playerMap.ContainsKey(deviceId)) {
+            return playerMap[deviceId];
         }
 
         var player = Instantiate(playerGameObject);
 
         Group.AddMember(player.transform, 1, 1);
 
-        var actualPlayerID = playerId + 4;
+        var playerId = AirConsole.instance.ConvertDeviceIdToPlayerNumber(deviceId);
 
-        playerMap.Add(playerId, actualPlayerID);
+        playerMap.Add(deviceId, playerId);
 
-        player.GetComponent<Player>().playerId = actualPlayerID;
+        player.GetComponent<Player>().playerId = playerId;
 
-        return actualPlayerID;
+        return playerId;
     }
 }

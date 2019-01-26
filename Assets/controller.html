@@ -25,8 +25,8 @@
             return;
         }
 
-        x = Math.round(x * 10) / 100;
-        y = Math.round(y * 10) / 100;
+        x = Math.round(x * 10) / 100 * 2;
+        y = Math.round(y * 10) / 100 * 2;
 
         if (x > 0.9) {
             x = 1;
@@ -36,6 +36,10 @@
             x = -1;
         }
 
+        if (x < 0.2 && x > -0.2) {
+            x = 0;
+        }
+
         if (y > 0.9) {
             y = 1;
         }
@@ -43,6 +47,12 @@
         if (y < -0.9) {
             y = -1;
         }
+
+        if (y < 0.2 && y > -0.2) {
+            y = 0;
+        }
+
+
 
         document.getElementById(`output`).innerHTML = 
             JSON.stringify({ tilt: { x, y },  }, null, 4);
