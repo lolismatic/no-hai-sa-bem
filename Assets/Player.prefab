@@ -99,10 +99,10 @@ MonoBehaviour:
   _player: {fileID: 0}
   _anim: {fileID: 4775515159425760644}
   minInput: 0.1
-  animSmoothing: 0.2
+  animSmoothing: 0.1
   animSpeedBoostTowardsPlayers: 0.5
-  distRangeToPlayerCenterToSpeedBoost: {x: 1, y: 2}
-  angleRangeToPlayerCenterToSpeedBoost: {x: 30, y: 90}
+  distRangeToPlayerCenterToSpeedBoost: {x: 0.1, y: 0.5}
+  angleRangeToPlayerCenterToSpeedBoost: {x: 30, y: 75}
   curDir: {x: 0, y: 0, z: 0}
   _distToTargetToBodyTurningSmoothness:
     serializedVersion: 2
