@@ -27,7 +27,7 @@ public class InputManager : MonoBehaviour
     
     void Start()
     {
-        AirConsole.instance.onMessage += OnMessage;
+        //AirConsole.instance.onMessage += OnMessage;
     }
 
     void OnMessage(int playerId, JToken data)

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,5 +34,19 @@ public class Player : MonoBehaviour
     private void OnDisable()
     {
         allPlayers.Remove(this);
+    }
+
+    public GameObject victoryMesh;
+
+    public void ActivateVictoryMesh()
+    {
+        if (victoryMesh != null)
+        {
+            victoryMesh.SetActive(true);
+            victoryMesh.transform.SetParent(null);
+            victoryMesh.transform.rotation = Quaternion.identity;
+            victoryMesh.GetComponent<VictoryFollowObj>().target = ragdoll.ik.references.head;
+        }
+
     }
 }

@@ -78,17 +78,20 @@ public class LimitPlayspace : MonoBehaviour
             reviveTimer = Time.time + reviveDelay;
         }
 
-        if (ragdoll.isRagdoll)
+        if (ragdollTool.shouldRevive)
         {
-            if (Time.time > reviveTimer)
+            if (ragdoll.isRagdoll)
             {
-                ragdollTool.Ragdoll(false, 0, 0f);
-                var containsPelvis = LevelCollider.instance.collider.bounds.Contains(ik.references.pelvis.transform.position);
-                var containsRoot = LevelCollider.instance.collider.bounds.Contains(transform.position);
-                if (!containsPelvis || !containsRoot)
+                if (Time.time > reviveTimer)
                 {
-                    BarManager.instance.RespawnAt(ragdollTool.groups, BarManager.instance.restartPosition);
-                    //transform.position = LevelCollider.instance.transform.position + (transform.position - LevelCollider.instance.transform.position).normalized * 10;
+                    ragdollTool.Ragdoll(false, 0, 0f);
+                    var containsPelvis = LevelCollider.instance.collider.bounds.Contains(ik.references.pelvis.transform.position);
+                    var containsRoot = LevelCollider.instance.collider.bounds.Contains(transform.position);
+                    if (!containsPelvis || !containsRoot)
+                    {
+                        BarManager.instance.RespawnAt(ragdollTool.groups, BarManager.instance.restartPosition);
+                        //transform.position = LevelCollider.instance.transform.position + (transform.position - LevelCollider.instance.transform.position).normalized * 10;
+                    }
                 }
             }
         }

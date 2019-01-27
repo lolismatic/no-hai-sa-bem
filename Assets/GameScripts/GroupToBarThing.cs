@@ -117,7 +117,7 @@ public class GroupToBarThing : MonoBehaviour
 
     private void GroupStatus_OnGroup()
     {
-        if (state == GroupStates.LostAndAlone || state == GroupStates.FromBar)
+        if (state == GroupStates.LostAndAlone)
         {
             // when we grouped from being lost, we go towards bar. so direction vector is always towards bar, plus the input. instead of ever being able to go away from bar.
             state = GroupStates.TowardsBar;

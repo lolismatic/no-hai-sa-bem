@@ -65,6 +65,9 @@ public class RagdollTool : MonoBehaviour
 
     [SerializeField]
     private PlayerGroupStatus _groups;
+
+    public bool shouldRevive = true;
+
     public PlayerGroupStatus groups
     {
         get
@@ -90,10 +93,13 @@ public class RagdollTool : MonoBehaviour
             MoveTowardsInsideSoWeDontExplodeAgain(toCollider, moveToCenterDist);
 
 
-            ik.references.head.GetComponentInChildren<Rigidbody>().AddForce(toCollider.normalized * forceTowardsMiddle, ForceMode.Impulse);
-            if (rb != null)
+            if (shouldRevive)
             {
-                rb.isKinematic = false;
+                ik.references.head.GetComponentInChildren<Rigidbody>().AddForce(toCollider.normalized * forceTowardsMiddle, ForceMode.Impulse);
+                if (rb != null)
+                {
+                    rb.isKinematic = false;
+                }
             }
         }
         else
