@@ -48,6 +48,7 @@ public class GroupToBarThing : MonoBehaviour
     }
 
     public GroupStates state = GroupStates.FromBar;
+    public event System.Action<GroupStates> OnStateChange;
 
     [SerializeField]
     private ParticleSystem _fromBarParticles;
@@ -68,6 +69,7 @@ public class GroupToBarThing : MonoBehaviour
     {
         groupStatus.OnGroup += GroupStatus_OnGroup;
         groupStatus.OnUngroup += GroupStatus_OnUngroup;
+        TriggerChangedState();
     }
 
     private void OnDisable()
@@ -83,6 +85,7 @@ public class GroupToBarThing : MonoBehaviour
             if (state == GroupStates.TowardsBar)
             {
                 state = GroupStates.FromBar;
+                TriggerChangedState();
                 MakeConnectionsHaveSpecificState(GroupStates.FromBar);
 
                 //fromBarParticles.Play();
@@ -102,6 +105,7 @@ public class GroupToBarThing : MonoBehaviour
             {
                 // we just lost our friends, become alone.
                 state = GroupStates.LostAndAlone;
+                TriggerChangedState();
 
                 if (applyForceOnAlone)
                 {
@@ -117,6 +121,7 @@ public class GroupToBarThing : MonoBehaviour
         {
             // when we grouped from being lost, we go towards bar. so direction vector is always towards bar, plus the input. instead of ever being able to go away from bar.
             state = GroupStates.TowardsBar;
+            TriggerChangedState();
 
             // make the others also go towards bar, regardless of their current state.
             MakeConnectionsHaveSpecificState(GroupStates.TowardsBar);
@@ -132,6 +137,7 @@ public class GroupToBarThing : MonoBehaviour
         {
             var grp = pointer.GetComponent<GroupToBarThing>();
             grp.state = state;
+            TriggerChangedState();
             pointer = pointer.leftGrabbed;
         }
         pointer = groupStatus.rightGrabbed;
@@ -139,7 +145,16 @@ public class GroupToBarThing : MonoBehaviour
         {
             var grp = pointer.GetComponent<GroupToBarThing>();
             grp.state = state;
+            TriggerChangedState();
             pointer = pointer.rightGrabbed;
+        }
+    }
+
+    private void TriggerChangedState()
+    {
+        if (OnStateChange != null)
+        {
+            OnStateChange(state);
         }
     }
 

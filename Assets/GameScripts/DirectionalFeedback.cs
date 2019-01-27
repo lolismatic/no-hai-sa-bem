@@ -27,7 +27,7 @@ public class DirectionalFeedback : MonoBehaviour
     {
         var input = InputManager.instance.GetPlayerInput(player.playerId);
         var topPoint = hat.position + hat.parent.up * tiltHeight + Vector3.right * input.x + Vector3.forward * input.y;
+        //hat.forward = hat.parent.forward;
         hat.up = topPoint - hat.position;
-
     }
 }
