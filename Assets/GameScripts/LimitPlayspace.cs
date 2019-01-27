@@ -55,10 +55,25 @@ public class LimitPlayspace : MonoBehaviour
     private float updateRareTimer;
 
 
-    public float reviveDelay = 3f;
+    public float extLevelReviveDelay = 3f;
     private float reviveTimer;
 
     public float moveToCenterDistOnOutOfPlayspace = 2f;
+
+    private void OnEnable()
+    {
+        ragdollTool.OnRagdoledWithDelay += RagdollTool_OnRagdoled;
+    }
+
+    private void RagdollTool_OnRagdoled(float reviveDelay)
+    {
+        reviveTimer = Time.time + reviveDelay;
+    }
+
+    private void OnDisable()
+    {
+        ragdollTool.OnRagdoledWithDelay -= RagdollTool_OnRagdoled;
+    }
 
     private void Update()
     {
@@ -73,9 +88,7 @@ public class LimitPlayspace : MonoBehaviour
     {
         if (!LevelCollider.instance.collider.bounds.Contains(ik.references.pelvis.transform.position))
         {
-            ragdollTool.Ragdoll(true, addForceWhenOutside, moveToCenterDistOnOutOfPlayspace);
-
-            reviveTimer = Time.time + reviveDelay;
+            ragdollTool.Ragdoll(true, addForceWhenOutside, moveToCenterDistOnOutOfPlayspace, this.extLevelReviveDelay);
         }
 
         if (ragdollTool.shouldRevive)
@@ -84,7 +97,7 @@ public class LimitPlayspace : MonoBehaviour
             {
                 if (Time.time > reviveTimer)
                 {
-                    ragdollTool.Ragdoll(false, 0, 0f);
+                    ragdollTool.Ragdoll(false, 0, 0f, 0f);
                     var containsPelvis = LevelCollider.instance.collider.bounds.Contains(ik.references.pelvis.transform.position);
                     var containsRoot = LevelCollider.instance.collider.bounds.Contains(transform.position);
                     if (!containsPelvis || !containsRoot)

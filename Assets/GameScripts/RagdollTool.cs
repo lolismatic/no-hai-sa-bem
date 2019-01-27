@@ -82,8 +82,9 @@ public class RagdollTool : MonoBehaviour
     
     public bool isRagdoll { get { return ragdoll.isRagdoll; } }
 
+    public  event System.Action<float> OnRagdoledWithDelay;
 
-    public void Ragdoll(bool active, float forceTowardsMiddle, float moveToCenterDist = 0)
+    public void Ragdoll(bool active, float forceTowardsMiddle, float moveToCenterDist, float delayToRevive)
     {
         if (active)
         {
@@ -95,12 +96,22 @@ public class RagdollTool : MonoBehaviour
 
             if (shouldRevive)
             {
-                ik.references.head.GetComponentInChildren<Rigidbody>().AddForce(toCollider.normalized * forceTowardsMiddle, ForceMode.Impulse);
+                if (!LevelCollider.instance.collider.bounds.Contains(ik.references.pelvis.transform.position))
+                {
+                    ik.references.head.GetComponentInChildren<Rigidbody>().AddForce(toCollider.normalized * forceTowardsMiddle, ForceMode.Impulse);
+                }
+
                 if (rb != null)
                 {
                     rb.isKinematic = false;
                 }
             }
+
+            if (OnRagdoledWithDelay != null)
+            {
+                OnRagdoledWithDelay(delayToRevive);
+            }
+
         }
         else
         {

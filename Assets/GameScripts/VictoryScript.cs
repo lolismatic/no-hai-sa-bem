@@ -20,7 +20,7 @@ public class VictoryScript : MonoBehaviour
         }
     }
 
-    
+
     [Header("Rare update")]
     public float updateRareDelay = 0.5f;
     private float updateRareTimer;
@@ -48,12 +48,18 @@ public class VictoryScript : MonoBehaviour
             {
                 if (p.ragdoll.groups.leftGrabbed == null && p.ragdoll.groups.rightGrabbed == null)
                 {
+                    StartCoroutine(pTween.Wait(0.5f, () =>
+                    {
+                        p.GetGroupStatus().UngroupSelf();
+
+                    }));
+
                     // p is alone!!!
-                    p.ragdoll.Ragdoll(true, 50, 0);
+                    p.ragdoll.Ragdoll(true, 50, 0, 100);
 
                     StartCoroutine(pTween.Wait(3f, () =>
                     {
-                        p.ragdoll.Ragdoll(false, 10f);
+                        p.ragdoll.Ragdoll(false, 10f, 0, 0);
                     }));
                 }
                 else
@@ -90,7 +96,7 @@ public class VictoryScript : MonoBehaviour
         if (!p.ragdoll.isRagdoll)
         {
             // VICTORY FOR THIS PLAYER
-            p.ragdoll.Ragdoll(true, victoryForce, 0);
+            p.ragdoll.Ragdoll(true, victoryForce, 0, 100);
 
             p.ActivateVictoryMesh();
 

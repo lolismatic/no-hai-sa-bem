@@ -94,6 +94,9 @@ public class PlayerControlAnims : MonoBehaviour
 
     private void Update()
     {
+        if (ragdoll.isRagdoll)
+            return;
+
         var playerIn = InputManager.instance.GetPlayerInput(player.playerId);
 
         var xzDirection = new Vector3(playerIn.x, 0, playerIn.y);
@@ -149,6 +152,21 @@ public class PlayerControlAnims : MonoBehaviour
         anim.SetFloat("Walk", speed);
 
     }
+
+    [SerializeField]
+    private RagdollTool _ragdoll;
+    public RagdollTool ragdoll
+    {
+        get
+        {
+            if (_ragdoll == null)
+            {
+                _ragdoll = GetComponent<RagdollTool>();
+            }
+            return _ragdoll;
+        }
+    }
+
 
     private void Update_RotateTowards(Vector3 dir)
     {

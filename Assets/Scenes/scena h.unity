@@ -963,31 +963,6 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[1]
       value: 
       objectReference: {fileID: 2100000, guid: 465189a7682f08c4fbb89791d4584f74, type: 2}
-    - target: {fileID: 7645520674278728692, guid: f7053ad2a11c9e948a7ed5678911e271,
-        type: 3}
-      propertyPath: groupRotateSmooth
-      value: 0.05
-      objectReference: {fileID: 0}
-    - target: {fileID: 7645520674278728692, guid: f7053ad2a11c9e948a7ed5678911e271,
-        type: 3}
-      propertyPath: maxDistToUngrab
-      value: 2.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7645520674278728692, guid: f7053ad2a11c9e948a7ed5678911e271,
-        type: 3}
-      propertyPath: minDistToGrab
-      value: 1.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 1965431298390687709, guid: f7053ad2a11c9e948a7ed5678911e271,
-        type: 3}
-      propertyPath: distForKeepTogether
-      value: 1.12
-      objectReference: {fileID: 0}
-    - target: {fileID: 1965431298390687709, guid: f7053ad2a11c9e948a7ed5678911e271,
-        type: 3}
-      propertyPath: keepTogetherForce
-      value: -0.2
-      objectReference: {fileID: 0}
     - target: {fileID: 2569965180639040843, guid: f7053ad2a11c9e948a7ed5678911e271,
         type: 3}
       propertyPath: m_IsActive
@@ -1732,7 +1707,8 @@ AudioSource:
   m_GameObject: {fileID: 639207290}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 243351420857327988, guid: b2c75640b7e74344f8d451928f3a840b,
+    type: 2}
   m_audioClip: {fileID: 8300000, guid: 0e60d471adde6ef409607e6b702ff4d2, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
@@ -4079,7 +4055,8 @@ AudioSource:
   m_GameObject: {fileID: 1002822099}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 243351420857327988, guid: b2c75640b7e74344f8d451928f3a840b,
+    type: 2}
   m_audioClip: {fileID: 8300000, guid: 7187379b70f16ef4ba8ec8940a670522, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
@@ -13543,12 +13520,22 @@ PrefabInstance:
     - target: {fileID: 5461637512025276460, guid: 3e2793339a33b9f4483276a8f31f7593,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.45272976
+      value: -0.45272973
       objectReference: {fileID: 0}
     - target: {fileID: 5461637511613794087, guid: 3e2793339a33b9f4483276a8f31f7593,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.45272976
+      value: -0.45272973
+      objectReference: {fileID: 0}
+    - target: {fileID: 5461637511613794087, guid: 3e2793339a33b9f4483276a8f31f7593,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 7.0640693
+      objectReference: {fileID: 0}
+    - target: {fileID: 5461637511613794087, guid: 3e2793339a33b9f4483276a8f31f7593,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -14.408067
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3e2793339a33b9f4483276a8f31f7593, type: 3}

@@ -38,6 +38,8 @@ public class GroupToBarThing : MonoBehaviour
     public bool applyForceOnAlone = false;
     public float forceOnAlone = 10f;
 
+    public float delayToReviveAlone = 10f;
+
     public enum GroupStates
     {
         FromBar, // the default state, everyone starts together from bar. can go home connected
@@ -109,7 +111,7 @@ public class GroupToBarThing : MonoBehaviour
 
                 if (applyForceOnAlone)
                 {
-                    ragdollTool.Ragdoll(true, forceOnAlone, 0);
+                    ragdollTool.Ragdoll(true, forceOnAlone, 0, this.delayToReviveAlone);
                 }
             }
         }
@@ -150,8 +152,26 @@ public class GroupToBarThing : MonoBehaviour
         }
     }
 
+    public SmartSound soundIoi;
+    public SmartSound soundBem;
+
     private void TriggerChangedState()
     {
+        if (state == GroupStates.LostAndAlone)
+        {
+            if (soundIoi != null)
+            {
+                soundIoi.Play();
+            }
+        }
+        else if (state == GroupStates.TowardsBar)
+        {
+            if (soundBem != null)
+            {
+                soundBem.Play();
+            }
+        }
+
         if (OnStateChange != null)
         {
             OnStateChange(state);
