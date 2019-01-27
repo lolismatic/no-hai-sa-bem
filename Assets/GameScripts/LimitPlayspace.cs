@@ -7,17 +7,18 @@ using Random = UnityEngine.Random;
 
 public class LimitPlayspace : MonoBehaviour
 {
+
     [SerializeField]
-    private Player _player;
-    public Player player
+    private RagdollTool _ragdollTool;
+    public RagdollTool ragdollTool
     {
         get
         {
-            if (_player == null)
+            if (_ragdollTool == null)
             {
-                _player = GetComponent<Player>();
+                _ragdollTool = GetComponent<RagdollTool>();
             }
-            return _player;
+            return _ragdollTool;
         }
     }
 
@@ -34,21 +35,6 @@ public class LimitPlayspace : MonoBehaviour
             return _ragdoll;
         }
     }
-
-    [SerializeField]
-    private Rigidbody _rb;
-    public Rigidbody rb
-    {
-        get
-        {
-            if (_rb == null)
-            {
-                _rb = GetComponent<Rigidbody>();
-            }
-            return _rb;
-        }
-    }
-
 
     [SerializeField]
     private FullBodyBipedIK _ik;
@@ -72,6 +58,8 @@ public class LimitPlayspace : MonoBehaviour
     public float reviveDelay = 3f;
     private float reviveTimer;
 
+    public float moveToCenterDistOnOutOfPlayspace = 2f;
+
     private void Update()
     {
         if (Time.time > updateRareTimer)
@@ -83,58 +71,27 @@ public class LimitPlayspace : MonoBehaviour
 
     private void UpdateRare()
     {
-        if (!LevelCollider.instance.collider.bounds.Contains(player.transform.position))
+        if (!LevelCollider.instance.collider.bounds.Contains(ik.references.pelvis.transform.position))
         {
-            ragdoll.EnableRagdoll();
-            var toCollider = LevelCollider.instance.collider.transform.position - player.transform.position;
-
-            MoveTowardsInsideSoWeDontExplodeAgain(toCollider);
-
-
-            ik.references.head.GetComponentInChildren<Rigidbody>().AddForce(toCollider.normalized * addForceWhenOutside, ForceMode.Impulse);
-            if (rb != null)
-            {
-                rb.isKinematic = false;
-            }
+            ragdollTool.Ragdoll(true, addForceWhenOutside, moveToCenterDistOnOutOfPlayspace);
 
             reviveTimer = Time.time + reviveDelay;
         }
 
         if (ragdoll.isRagdoll)
         {
-            Move2Pelvis(Vector3.zero);
             if (Time.time > reviveTimer)
             {
-                ragdoll.DisableRagdoll();
-                MoveToZeroOnY();
+                ragdollTool.Ragdoll(false, 0, 0f);
+                var containsPelvis = LevelCollider.instance.collider.bounds.Contains(ik.references.pelvis.transform.position);
+                var containsRoot = LevelCollider.instance.collider.bounds.Contains(transform.position);
+                if (!containsPelvis || !containsRoot)
+                {
+                    BarManager.instance.RespawnAt(ragdollTool.groups, BarManager.instance.restartPosition);
+                    //transform.position = LevelCollider.instance.transform.position + (transform.position - LevelCollider.instance.transform.position).normalized * 10;
+                }
             }
         }
     }
 
-    private void MoveToZeroOnY()
-    {
-        var pos = ik.references.root.position;
-        pos.y = 0;
-        ik.references.root.position = pos;
-    }
-
-    private void MoveTowardsInsideSoWeDontExplodeAgain(Vector3 toCollider)
-    {
-        var moveeee = -toCollider;
-        moveeee.Normalize();
-        moveeee.y = 0;
-        Move2Pelvis(moveeee);
-        MoveToZeroOnY();
-    }
-
-    private void Move2Pelvis(Vector3 offset)
-    {
-        var pelvis = ik.references.pelvis;
-        var root = ik.references.root;
-
-        // Move the root of the character to where the pelvis is without moving the ragdoll
-        Vector3 toPelvis = pelvis.position - root.position + offset;
-        root.position += toPelvis;
-        pelvis.transform.position -= toPelvis;
-    }
 }

@@ -53,6 +53,21 @@ public class PlayerGroupStatus : MonoBehaviour
         }
     }
 
+    [SerializeField]
+    private RagdollTool _ragdollTool;
+    public RagdollTool ragdollTool
+    {
+        get
+        {
+            if (_ragdollTool == null)
+            {
+                _ragdollTool = GetComponent<RagdollTool>();
+            }
+            return _ragdollTool;
+        }
+    }
+
+
     public static PlayerGroupStatus Get(Player fromPlayer)
     {
         PlayerGroupStatus gg = null;
@@ -166,7 +181,10 @@ public class PlayerGroupStatus : MonoBehaviour
                             {
                                 if (otherGS.rightGrabbed == null)
                                 {
-                                    nearestGrabbableRight.Add(otherGS);
+                                    if (!otherGS.ragdollTool.isRagdoll)
+                                    {
+                                        nearestGrabbableRight.Add(otherGS);
+                                    }
                                 }
                             }
                         }
@@ -180,7 +198,10 @@ public class PlayerGroupStatus : MonoBehaviour
                             {
                                 if (otherGS.leftGrabbed == null)
                                 {
-                                    nearestGrabbableLeft.Add(otherGS);
+                                    if (!otherGS.ragdollTool.isRagdoll)
+                                    {
+                                        nearestGrabbableLeft.Add(otherGS);
+                                    }
                                 }
                             }
                         }
@@ -283,11 +304,26 @@ public class PlayerGroupStatus : MonoBehaviour
     float rightWeight;
     public float smoothWeights = 0.02f;
 
+    // when foot dist is big, ik target weight should be smaller.
+    public AnimationCurve ikTargetsBasedOnFootDist = new AnimationCurve() { keys = new Keyframe[] { new Keyframe(0, 1, 0, 0), new Keyframe(1, 0, 0, 0) } };
+
     private void UpdateIkWeights()
     {
-        leftWeight = Mathf.MoveTowards(leftWeight, leftGrabbed ? 1f : 0f, smoothWeights);
+
+        var leftAbsTarget = 1f;
+        if (leftGrabbed != null)
+        {
+            leftAbsTarget = ikTargetsBasedOnFootDist.Evaluate((leftGrabbed.transform.position - transform.position).magnitude / maxDistToUngrab);
+        }
+        var rightAbsTarget = 1f;
+        if (rightGrabbed != null)
+        {
+            rightAbsTarget = ikTargetsBasedOnFootDist.Evaluate((rightGrabbed.transform.position - transform.position).magnitude / maxDistToUngrab);
+        }
+
+        leftWeight = Mathf.MoveTowards(leftWeight, leftGrabbed ? leftAbsTarget : 0f, smoothWeights);
         ik.solver.leftHandEffector.positionWeight = leftWeight;
-        rightWeight = Mathf.MoveTowards(rightWeight, rightGrabbed ? 1f : 0f, smoothWeights);
+        rightWeight = Mathf.MoveTowards(rightWeight, rightGrabbed ? rightAbsTarget : 0f, smoothWeights);
         ik.solver.rightHandEffector.positionWeight = rightWeight;
     }
 
@@ -397,6 +433,17 @@ public class PlayerGroupStatus : MonoBehaviour
         }
     }
 
+    public void UngroupSelf()
+    {
+        if (leftGrabbed != null)
+        {
+            Ungrab(leftGrabbed);
+        }
+        if (rightGrabbed != null)
+        {
+            Ungrab(rightGrabbed);
+        }
+    }
 
 }
 

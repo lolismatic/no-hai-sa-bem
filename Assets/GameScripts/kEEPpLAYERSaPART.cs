@@ -52,6 +52,7 @@ public class kEEPpLAYERSaPART : MonoBehaviour
     public float swarmingForce = 0.1f;
     public float minDist = 0.3f;
 
+    public float keepTogetherForce = 0.1f;
     public float distForKeepTogether = 0.6f;
 
     public bool keepTogether
@@ -75,7 +76,7 @@ public class kEEPpLAYERSaPART : MonoBehaviour
             {
                 if (towardsLEft.sqrMagnitude > distForKeepTogether * distForKeepTogether)
                 {
-                    away += towardsLEft;
+                    away += towardsLEft.normalized;
                     average += 1;
                 }
             }
@@ -96,7 +97,7 @@ public class kEEPpLAYERSaPART : MonoBehaviour
             {
                 if (toRight.sqrMagnitude > distForKeepTogether * distForKeepTogether)
                 {
-                    away += toRight;
+                    away += toRight.normalized;
                     average += 1;
                 }
             }
@@ -110,8 +111,8 @@ public class kEEPpLAYERSaPART : MonoBehaviour
             }
         }
 
-        transform.position += (keepTogether ? -1 : 1f)
-            * away / Mathf.Max(1, average) * swarmingForce * Time.deltaTime;
+        transform.position += (keepTogether ? -1 * keepTogetherForce : 1f * swarmingForce)
+            * away / Mathf.Max(1, average) * Time.deltaTime;
 
     }
 }

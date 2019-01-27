@@ -21,6 +21,23 @@ public class GroupToBarThing : MonoBehaviour
         }
     }
 
+    [SerializeField]
+    private RagdollTool _ragdollTool;
+    public RagdollTool ragdollTool
+    {
+        get
+        {
+            if (_ragdollTool == null)
+            {
+                _ragdollTool = GetComponent<RagdollTool>();
+            }
+            return _ragdollTool;
+        }
+    }
+
+    public bool applyForceOnAlone = false;
+    public float forceOnAlone = 10f;
+
     public enum GroupStates
     {
         FromBar, // the default state, everyone starts together from bar. can go home connected
@@ -68,7 +85,11 @@ public class GroupToBarThing : MonoBehaviour
                 state = GroupStates.FromBar;
                 MakeConnectionsHaveSpecificState(GroupStates.FromBar);
 
-                fromBarParticles.Play();
+                //fromBarParticles.Play();
+
+                // RespawnAtBar
+                BarManager.instance.RespawnAt(groupStatus, BarManager.instance.restartPosition);
+
             }
         }
     }
@@ -81,6 +102,11 @@ public class GroupToBarThing : MonoBehaviour
             {
                 // we just lost our friends, become alone.
                 state = GroupStates.LostAndAlone;
+
+                if (applyForceOnAlone)
+                {
+                    ragdollTool.Ragdoll(true, forceOnAlone, 0);
+                }
             }
         }
     }
@@ -115,5 +141,24 @@ public class GroupToBarThing : MonoBehaviour
             grp.state = state;
             pointer = pointer.rightGrabbed;
         }
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (state == GroupStates.FromBar)
+        {
+            Gizmos.color = Color.green;
+        }
+        else if (state == GroupStates.LostAndAlone)
+        {
+            Gizmos.color = Color.red;
+        }
+        else if (state == GroupStates.TowardsBar)
+        {
+            Gizmos.color = Color.cyan;
+        }
+
+        Gizmos.DrawSphere(transform.position + Vector3.up * 4, 0.5f);
+
     }
 }

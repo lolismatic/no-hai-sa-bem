@@ -1,0 +1,198 @@
+fileFormatVersion: 2
+guid: 2f835ddfa29822747a92c0f5a333ccdd
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: Armature_Duck
+    100002: //RootNode
+    100004: duck.004
+    100006: duck1
+    100008: duck1_end
+    100010: duck2
+    100012: duck2_end
+    100014: duck3
+    100016: duck3_end
+    100018: duck4
+    100020: duck4_end
+    100022: master_bone
+    100024: root
+    100026: star1
+    100028: star1_end
+    100030: star2
+    100032: star2_end
+    100034: star3
+    100036: star3_end
+    100038: star4
+    100040: star4_end
+    400000: Armature_Duck
+    400002: //RootNode
+    400004: duck.004
+    400006: duck1
+    400008: duck1_end
+    400010: duck2
+    400012: duck2_end
+    400014: duck3
+    400016: duck3_end
+    400018: duck4
+    400020: duck4_end
+    400022: master_bone
+    400024: root
+    400026: star1
+    400028: star1_end
+    400030: star2
+    400032: star2_end
+    400034: star3
+    400036: star3_end
+    400038: star4
+    400040: star4_end
+    2100000: duck-yellow
+    2100002: mouth_red
+    2100004: eye_white
+    2100006: black
+    2100008: bannanna_yellow
+    4300000: duck.004
+    7400000: Armature_Duck|Armature_DuckAction
+    7400002: Armature_Duck|Armature_DuckAction.001
+    7400004: Armature_Duck|Armature_DuckAction.002
+    7400006: Armature_Duck|Armature_DuckAction.003
+    9500000: //RootNode
+    13700000: duck.004
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: bannanna_yellow
+    second: {fileID: 2100000, guid: daa2b061aa1c32e4188493de5c66cd84, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: black
+    second: {fileID: 2100000, guid: 1bc028d3639d2c549a1e979b85bfa621, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: duck-yellow
+    second: {fileID: 2100000, guid: 2b4e325bb55e8b14eb7d012696dca5ad, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: eye_white
+    second: {fileID: 2100000, guid: 8f0ca609c5cb12f4ebda758bfc9b26ae, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mouth_red
+    second: {fileID: 2100000, guid: 0c9cacfb53a05ba429cfd59590870377, type: 2}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 0
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Armature_Duck|Armature_DuckAction.003
+      takeName: Armature_Duck|Armature_DuckAction.003
+      firstFrame: 0
+      lastFrame: 120
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 0.01
+    hasPreviousCalculatedGlobalScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -64,9 +64,6 @@ public class PlayerControlAnims : MonoBehaviour
 
     #region stolen from skijump AI ;)
     [Header("Rotation")]
-    [Tooltip("Body turning smoothness override for target movement")]
-    [SerializeField]
-    private AnimationCurve _distToTargetToBodyTurningSmoothness = new AnimationCurve() { keys = new Keyframe[] { new Keyframe(0, 1f, 0, 0), new Keyframe(3, 0.036f, 0, 0) } };
 
     [SerializeField]
     private float _bodyTurningSmoothnessDefault = 0.05f;
@@ -82,8 +79,7 @@ public class PlayerControlAnims : MonoBehaviour
             return;
         }
         var targetDistance = e.magnitude;
-        var hasMoveTarget = false;
-        var bodyTurningSmoothness = hasMoveTarget ? _distToTargetToBodyTurningSmoothness.Evaluate(targetDistance) : _bodyTurningSmoothnessDefault;
+        var bodyTurningSmoothness =_bodyTurningSmoothnessDefault;
         bodyTurningSmoothness = Mathf.Max(bodyTurningSmoothness, forceMaxRotationSmoothing);
         transform.forward = Vector3.Lerp(transform.forward, e, bodyTurningSmoothness);
     }
