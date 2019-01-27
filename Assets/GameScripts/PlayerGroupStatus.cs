@@ -72,26 +72,29 @@ public class PlayerGroupStatus : MonoBehaviour
     public event System.Action OnGroup;
     public event System.Action OnUngroup;
 
-    private HashSet<Component> ungroupInhibitors = new HashSet<Component>();
-    // can ungroup when the inhibitors are zero.
+    [SerializeField]
+    private GroupToBarThing _groupToBar;
+    public GroupToBarThing groupToBar
+    {
+        get
+        {
+            if (_groupToBar == null)
+            {
+                _groupToBar = GetComponent<GroupToBarThing>();
+            }
+            return _groupToBar;
+        }
+    }
+
+    // can ungroup as long as we are not going towards bar.
     public bool canUngroup
     {
         get
         {
-            return ungroupInhibitors.Count == 0;
+            return groupToBar.state != GroupToBarThing.GroupStates.TowardsBar;
         }
     }
-
-    public void DisallowUngrouping(Component sender)
-    {
-        ungroupInhibitors.Add(sender);
-    }
-
-    public void AllowUngrouping(Component sender)
-    {
-        ungroupInhibitors.Remove(sender);
-    }
-
+    
     [Space]
     public float groupRotateSmooth = 0.1f;
 
@@ -149,7 +152,7 @@ public class PlayerGroupStatus : MonoBehaviour
                         }
                     }
                 }
-                else if (leftGrabbed == null || rightGrabbed == null) // if either hand is free AND we are not grabbing the other player...
+                else if (leftGrabbed == null || rightGrabbed == null) // if either hand is free AND we are not already grabbing the other player...
                 {
                     // check if we can grab their left/right. i.e. if our left AND their right is free...
                     if (feetDist < minDistToGrab)
@@ -157,21 +160,28 @@ public class PlayerGroupStatus : MonoBehaviour
                         // if our left is free and right is not grabbing same guy
                         if (leftGrabbed == null && rightGrabbed != otherGS)
                         {
-                            var otherFarRight = FindAvailable(false, otherGS);
-                            if (otherFarRight != null)
+                            var isOtherGSConnectedToMe = IsOtherGSConnectedToMe(otherGS, otherGS, true);
+                            if (!isOtherGSConnectedToMe)
                             {
-                                nearestGrabbableRight.Add(otherFarRight);
+                                var otherFarRight = FindAvailable(false, otherGS);
+                                if (otherFarRight != null)
+                                {
+                                    nearestGrabbableRight.Add(otherFarRight);
+                                }
                             }
                         }
 
                         // if our right is free
                         if (rightGrabbed == null && leftGrabbed != otherGS)
                         {
-                            // find other ppl with the right free.
-                            var otherFarLeft = FindAvailable(true, otherGS);
-                            if (otherFarLeft != null)
+                            var isOtherGSConnectedToMe = IsOtherGSConnectedToMe(otherGS, otherGS, false);
+                            if (!isOtherGSConnectedToMe)
                             {
-                                nearestGrabbableLeft.Add(otherFarLeft);
+                                var otherFarLeft = FindAvailable(true, otherGS);
+                                if (otherFarLeft != null)
+                                {
+                                    nearestGrabbableLeft.Add(otherFarLeft);
+                                }
                             }
                         }
                     }
@@ -179,22 +189,6 @@ public class PlayerGroupStatus : MonoBehaviour
                 }
 
             }
-        }
-
-        // remove already grabbed motherfuckers !!!! sso we don't make the hora mare
-        var pointer = leftGrabbed;
-        while (pointer != null)
-        {
-            nearestGrabbableLeft.Remove(pointer);
-            nearestGrabbableRight.Remove(pointer);
-            pointer = pointer.leftGrabbed;
-        }
-        pointer = rightGrabbed;
-        while (pointer != null)
-        {
-            nearestGrabbableLeft.Remove(pointer);
-            nearestGrabbableRight.Remove(pointer);
-            pointer = pointer.rightGrabbed;
         }
 
         // grab for left, the nearest available right.
@@ -210,6 +204,30 @@ public class PlayerGroupStatus : MonoBehaviour
             var nearestLeft = nearestGrabbableLeft.Aggregate((p1, p2) => GetNearestDistToPlayer(p1, false) < GetNearestDistToPlayer(p2, false) ? p1 : p2);
             Grab(false, nearestLeft);
         }
+    }
+
+    // is the other connected to me on their left?
+    private bool IsOtherGSConnectedToMe(PlayerGroupStatus otherFirst, PlayerGroupStatus otherGS, bool otherLeft)
+    {
+        if (otherGS == this)
+        {
+            return true;
+        }
+
+        if ((otherLeft ? otherGS.leftGrabbed : otherGS.rightGrabbed) == this)
+        {
+            return true;
+        }
+
+        var pointer = otherLeft ? otherGS.leftGrabbed : otherGS.rightGrabbed;
+        if (pointer == otherFirst)
+            return false;
+
+        if (pointer != this && pointer != null)
+        {
+            return IsOtherGSConnectedToMe(otherFirst, pointer, otherLeft);
+        }
+        return false;
     }
 
     private void RotateUpdate_ToGroup()
@@ -271,30 +289,35 @@ public class PlayerGroupStatus : MonoBehaviour
     }
 
     // finds the last available left/right grabbable player = the one that has the *left* (left/right) free hand.
-    private PlayerGroupStatus FindAvailable(bool otherLeft, PlayerGroupStatus otherGS, int maxIterations = 3)
+    private PlayerGroupStatus FindAvailable(bool otherLeft, PlayerGroupStatus otherGS)
     {
-        if (maxIterations <= 0)
-            return null;
-
-        // if other left is needed, and it is null, that one is available. return.
-        if ((otherGS.leftGrabbed == null && otherLeft)
-            || (otherGS.rightGrabbed == null && !otherLeft))
+        // if otherGS has a free hand on the otherLeft, return true.
+        if ((otherLeft && otherGS.leftGrabbed == null)
+            ||(!otherLeft && otherGS.rightGrabbed == null))
         {
             return otherGS;
         }
-        else // other left is needed but other left is not null.
+
+        // else, return the otherGS's otherLeft side and check again, until we find a null, or the initial one.
+        else
         {
-            // if the next in the chain is not ourself
-            if ((otherLeft && otherGS.leftGrabbed != this) ||
-                (!otherLeft && otherGS.rightGrabbed != this))
+            // start checking in the order of otherLeft
+            var init = otherGS;
+            var pointer = otherLeft ? otherGS.leftGrabbed : otherGS.rightGrabbed;
+            while (pointer != init)
             {
-                // return the next in chain....
-                return FindAvailable(otherLeft, otherLeft ? otherGS.leftGrabbed : otherGS.rightGrabbed, maxIterations--);
+                // if the next element after pointer is null, return the pointer.
+                var nextAfterPointer = (otherLeft ? pointer.leftGrabbed : pointer.rightGrabbed);
+                if (nextAfterPointer == null)
+                {
+                    return pointer;
+                }
+                else
+                {
+                    pointer = nextAfterPointer;
+                }
             }
-            else
-            {
-                return null;
-            }
+            return null;
         }
     }
 
@@ -334,6 +357,11 @@ public class PlayerGroupStatus : MonoBehaviour
                     nearest.Grab(!myLeft, this, false);
                 }
 
+                if (OnGroup != null)
+                {
+                    OnGroup();
+                }
+
             }
         }
         else
@@ -347,6 +375,11 @@ public class PlayerGroupStatus : MonoBehaviour
                 {
                     // other player grab this
                     nearest.Grab(!myLeft, this, false);
+                }
+
+                if (OnGroup != null)
+                {
+                    OnGroup();
                 }
 
             }
@@ -365,6 +398,12 @@ public class PlayerGroupStatus : MonoBehaviour
             }
             ik.solver.leftHandEffector.target = null;
             leftGrabbed = null;
+
+            if (OnUngroup != null)
+            {
+                OnUngroup();
+            }
+
         }
         else if (rightGrabbed == other)
         {
@@ -375,6 +414,12 @@ public class PlayerGroupStatus : MonoBehaviour
             }
             ik.solver.rightHandEffector.target = null;
             rightGrabbed = null;
+
+            if (OnUngroup != null)
+            {
+                OnUngroup();
+            }
+
         }
     }
 

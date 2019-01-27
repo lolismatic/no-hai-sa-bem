@@ -55,13 +55,12 @@ public class kEEPpLAYERSaPART : MonoBehaviour
     public float distForKeepTogether = 0.6f;
 
     public bool keepTogether
-        ;
-    //{
-    //    get
-    //    {
-    //        return groupToBar.state == GroupToBarThing.GroupStates.TowardsBar;
-    //    }
-    //}
+    {
+        get
+        {
+            return groupToBar.state == GroupToBarThing.GroupStates.TowardsBar;
+        }
+    }
 
     private void Update()
     {

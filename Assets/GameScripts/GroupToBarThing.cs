@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,6 +32,21 @@ public class GroupToBarThing : MonoBehaviour
 
     public GroupStates state = GroupStates.FromBar;
 
+    [SerializeField]
+    private ParticleSystem _fromBarParticles;
+    public ParticleSystem fromBarParticles
+    {
+        get
+        {
+            if (_fromBarParticles == null)
+            {
+                _fromBarParticles = GetComponentInChildren<ParticleSystem>();
+            }
+            return _fromBarParticles;
+        }
+    }
+
+
     private void OnEnable()
     {
         groupStatus.OnGroup += GroupStatus_OnGroup;
@@ -49,8 +65,10 @@ public class GroupToBarThing : MonoBehaviour
         {
             if (state == GroupStates.TowardsBar)
             {
-                groupStatus.AllowUngrouping(this);
                 state = GroupStates.FromBar;
+                MakeConnectionsHaveSpecificState(GroupStates.FromBar);
+
+                fromBarParticles.Play();
             }
         }
     }
@@ -59,30 +77,43 @@ public class GroupToBarThing : MonoBehaviour
     {
         if (state == GroupStates.FromBar)
         {
-            // we just lost our friends, become alone.
-            state = GroupStates.LostAndAlone;
-        }
-        else if (state == GroupStates.LostAndAlone)
-        {
-            // cannot get further lost...
-            // no-op
-        }
-        else if (state == GroupStates.TowardsBar)
-        {
-            // ungrouped from towards bar??? :/ impossible!!!! ERROR
-            // no-op
+            if (groupStatus.leftGrabbed == null && groupStatus.rightGrabbed == null)
+            {
+                // we just lost our friends, become alone.
+                state = GroupStates.LostAndAlone;
+            }
         }
     }
 
     private void GroupStatus_OnGroup()
     {
-        if (state == GroupStates.LostAndAlone)
+        if (state == GroupStates.LostAndAlone || state == GroupStates.FromBar)
         {
             // when we grouped from being lost, we go towards bar. so direction vector is always towards bar, plus the input. instead of ever being able to go away from bar.
             state = GroupStates.TowardsBar;
 
-            // and we cannot ungroup.
-            groupStatus.DisallowUngrouping(this);
+            // make the others also go towards bar, regardless of their current state.
+            MakeConnectionsHaveSpecificState(GroupStates.TowardsBar);
+        }
+
+    }
+
+    private void MakeConnectionsHaveSpecificState(GroupStates state)
+    {
+        var init = groupStatus;
+        var pointer = groupStatus.leftGrabbed;
+        while (pointer != null && pointer != init)
+        {
+            var grp = pointer.GetComponent<GroupToBarThing>();
+            grp.state = state;
+            pointer = pointer.leftGrabbed;
+        }
+        pointer = groupStatus.rightGrabbed;
+        while (pointer != null && pointer != init)
+        {
+            var grp = pointer.GetComponent<GroupToBarThing>();
+            grp.state = state;
+            pointer = pointer.rightGrabbed;
         }
     }
 }

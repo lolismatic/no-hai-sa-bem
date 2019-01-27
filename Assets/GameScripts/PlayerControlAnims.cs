@@ -46,6 +46,22 @@ public class PlayerControlAnims : MonoBehaviour
     public Vector3 curDir;
     public float curSpeed;
 
+    [SerializeField]
+    private GroupToBarThing _groupToBar;
+    public GroupToBarThing groupToBar
+    {
+        get
+        {
+            if (_groupToBar == null)
+            {
+                _groupToBar = GetComponent<GroupToBarThing>();
+            }
+            return _groupToBar;
+        }
+    }
+    public float towardsBarMulti = 1f;
+    public float towardsBarMaxVelocity = 1f;
+
     #region stolen from skijump AI ;)
     [Header("Rotation")]
     [Tooltip("Body turning smoothness override for target movement")]
@@ -85,6 +101,13 @@ public class PlayerControlAnims : MonoBehaviour
         var playerIn = InputManager.instance.GetPlayerInput(player.playerId);
 
         var xzDirection = new Vector3(playerIn.x, 0, playerIn.y);
+
+        if (this.groupToBar.state == GroupToBarThing.GroupStates.TowardsBar)
+        {
+            var towardsBar = (BarManager.instance.barPosition.position - transform.position).normalized * towardsBarMulti;
+            xzDirection = (xzDirection + towardsBar) / 2;
+            xzDirection = Vector3.ClampMagnitude(xzDirection, towardsBarMaxVelocity);
+        }
 
         if (xzDirection.sqrMagnitude < minInput * minInput)
         {
@@ -137,7 +160,7 @@ public class PlayerControlAnims : MonoBehaviour
         //transform.LookAt(transform.position + dir);
 
         RotationUpdate(dir);
-        
+
     }
 
     [DebugButton]

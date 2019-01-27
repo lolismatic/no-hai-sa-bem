@@ -34,4 +34,14 @@ public class BarManager : MonoBehaviour
         }
     }
 
+    public Transform barPosition;
+
+    private void Awake()
+    {
+        if (barPosition == null)
+        {
+            barPosition = transform;
+        }
+    }
+
 }
