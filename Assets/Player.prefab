@@ -10110,22 +10110,22 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 0.8500981
-      value: 0.7803
-      inSlope: -0.7629973
-      outSlope: -0.7629973
+      time: 0.936067
+      value: 0.83072245
+      inSlope: -0.523624
+      outSlope: -0.523624
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.060443494
+      inWeight: 0.06323626
       outWeight: 0.33333334
     - serializedVersion: 3
       time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
+      value: 0.46870446
+      inSlope: -1.3004218
+      outSlope: -1.3004218
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0
+      inWeight: 0.049250603
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -10184,7 +10184,7 @@ MonoBehaviour:
   _ragdollTool: {fileID: 0}
   applyForceOnAlone: 1
   forceOnAlone: 0
-  delayToReviveAlone: 5
+  delayToReviveAlone: 7
   state: 0
   _fromBarParticles: {fileID: 391117969}
   soundIoi: {fileID: 3244354992458262125}

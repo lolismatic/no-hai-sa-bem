@@ -135,6 +135,11 @@ public class PlayerGroupStatus : MonoBehaviour
     {
         UpdateIkWeights();
 
+        if (ragdollTool.isRagdoll)
+        {
+            return;
+        }
+
         RotateUpdate_ToGroup();
 
         // clear cache of nearby players
